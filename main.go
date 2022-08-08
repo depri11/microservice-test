@@ -1,16 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
 
-	"github.com/depri11/lolipad/src/configs"
+	"github.com/depri11/lolipad/src/routers"
 )
 
 func main() {
-	db, err := configs.SetupDB()
+	mainRoute, err := routers.SetupRouter()
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Database connect")
+	var addrs string = "0.0.0.0:3000"
+
+	http.ListenAndServe(addrs, mainRoute)
 }
