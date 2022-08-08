@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	_, err := configs.SetupDB()
+	db, err := configs.SetupDB()
 	if err != nil {
 		panic(err)
 	}
