@@ -28,11 +28,17 @@ func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, 
 
 	user.Password = hash
 
-	data, err := s.repository.SaveData(&user)
+	dataUser, err := s.repository.SaveData(&user)
 	if err != nil {
 		return nil, err
 	}
 
-	response := helpers.ResponseJSON("Success", 200, "OK", data)
+	var res models.ResponseRegisterUser
+	res.ID = dataUser.ID
+	res.Msisdn = dataUser.Msisdn
+	res.Name = dataUser.Name
+	res.Username = dataUser.Username
+
+	response := helpers.ResponseJSON("Success", 200, "OK", res)
 	return response, nil
 }
