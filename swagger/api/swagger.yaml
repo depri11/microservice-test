@@ -1,0 +1,175 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Lolipad"
+  contact: {}
+host: "localhost:3000"
+basePath: "/"
+tags:
+- name: "Auth"
+- name: "Logistic"
+schemes:
+- "http"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /auth/check-token:
+    get:
+      tags:
+      - "Auth"
+      summary: "Check Token"
+      operationId: "CheckToken"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: false
+        type: "string"
+        default: "Bearer {token}"
+        x-exportParamName: "Authorization"
+        x-optionalDataType: "String"
+      deprecated: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+  /auth/:
+    post:
+      tags:
+      - "Auth"
+      summary: "Login"
+      operationId: "Login"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: false
+        type: "string"
+        default: "Bearer {token}"
+        x-exportParamName: "Authorization"
+        x-optionalDataType: "String"
+      - in: "body"
+        name: "Body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/LoginRequest"
+        x-exportParamName: "Body"
+      deprecated: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+  /auth/register:
+    post:
+      tags:
+      - "Auth"
+      summary: "Register"
+      operationId: "Register"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: false
+        type: "string"
+        default: "Bearer {token}"
+        x-exportParamName: "Authorization"
+        x-optionalDataType: "String"
+      - in: "body"
+        name: "Body"
+        description: ""
+        required: true
+        schema:
+          $ref: "#/definitions/RegisterRequest"
+        x-exportParamName: "Body"
+      deprecated: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+  /logistic/all:
+    get:
+      tags:
+      - "Logistic"
+      summary: "Get All"
+      operationId: "GetAll"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: false
+        type: "string"
+        default: "Bearer {token}"
+        x-exportParamName: "Authorization"
+        x-optionalDataType: "String"
+      deprecated: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+  /logistic:
+    get:
+      tags:
+      - "Logistic"
+      summary: "Get Data"
+      operationId: "GetData"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: false
+        type: "string"
+        default: "Bearer {token}"
+        x-exportParamName: "Authorization"
+        x-optionalDataType: "String"
+      deprecated: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+securityDefinitions: {}
+definitions:
+  LoginRequest:
+    type: "object"
+    required:
+    - "msisdn"
+    - "password"
+    properties:
+      msisdn:
+        type: "string"
+      password:
+        type: "string"
+    title: "LoginRequest"
+    example:
+      msisdn: "82268357171"
+      password: "123123"
+  RegisterRequest:
+    type: "object"
+    required:
+    - "msisdn"
+    - "name"
+    - "password"
+    - "username"
+    properties:
+      msisdn:
+        type: "string"
+      name:
+        type: "string"
+      username:
+        type: "string"
+      password:
+        type: "string"
+    title: "RegisterRequest"
+    example:
+      msisdn: "82268357171"
+      name: "Tes"
+      username: "dev12"
+      password: "123123"
