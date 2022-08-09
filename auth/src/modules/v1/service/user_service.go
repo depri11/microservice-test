@@ -5,6 +5,7 @@ import (
 	"github.com/depri11/lolipad/auth/src/helpers"
 	"github.com/depri11/lolipad/auth/src/interfaces"
 	"github.com/depri11/lolipad/auth/src/models"
+	"github.com/google/uuid"
 )
 
 type service struct {
@@ -17,6 +18,8 @@ func NewService(repository interfaces.UserRepository) *service {
 
 func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, error) {
 	var user entity.User
+	id := uuid.New()
+	user.ID = id
 	user.Msisdn = input.Msisdn
 	user.Name = input.Name
 	user.Username = input.Username

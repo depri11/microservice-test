@@ -1,7 +1,9 @@
 package entity
 
+import "github.com/google/uuid"
+
 type User struct {
-	ID       string
+	ID       uuid.UUID
 	Msisdn   int
 	Name     string
 	Username string
