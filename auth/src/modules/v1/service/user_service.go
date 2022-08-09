@@ -17,6 +17,18 @@ func NewService(repository interfaces.UserRepository) *service {
 }
 
 func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, error) {
+	_, err := s.repository.GetByMsisdn(input.Msisdn)
+	if err == nil {
+		response := helpers.ResponseJSON("Failed", 401, "error", "msisdn already exists")
+		return response, nil
+	}
+
+	_, err = s.repository.GetByUsername(input.Username)
+	if err == nil {
+		response := helpers.ResponseJSON("Failed", 401, "error", "username already exists")
+		return response, nil
+	}
+
 	var user entity.User
 	id := uuid.New()
 	user.ID = id

@@ -7,6 +7,8 @@ import (
 )
 
 type UserRepository interface {
+	GetByMsisdn(msisdn int) (*entity.User, error)
+	GetByUsername(username string) (*entity.User, error)
 	SaveData(data *entity.User) (*entity.User, error)
 }
 
