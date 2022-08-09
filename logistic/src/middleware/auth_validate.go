@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -14,18 +16,34 @@ func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 		headerToken := r.Header.Get("Authorization")
 
 		if !strings.Contains(headerToken, "Bearer") {
-			helpers.ResponseJSON("invalid header type", 401, "error", nil)
+			helpers.ResponseJSON("Failed", http.StatusBadRequest, "error", "invalid header type").Send(w)
 			return
 		}
 
 		token := strings.Replace(headerToken, "Bearer ", "", -1)
-		checkToken, err := helpers.CheckToken(token)
+
+		urlCheckToken := "http://localhost:3000/auth/check-token"
+
+		var jsonData = map[string]string{"token": token}
+		b, _ := json.Marshal(jsonData)
+		request, err := http.NewRequest("GET", urlCheckToken, bytes.NewBuffer(b))
 		if err != nil {
-			helpers.ResponseJSON("invalid token", 401, "error", nil)
+			helpers.ResponseJSON("Internal Server Error", http.StatusInternalServerError, "error", err.Error()).Send(w)
 			return
 		}
 
-		r.Header.Set("user_id", checkToken.Id)
+		client := &http.Client{}
+		response, err := client.Do(request)
+		if err != nil {
+			helpers.ResponseJSON("Internal Server Error", http.StatusInternalServerError, "error", err.Error()).Send(w)
+			return
+		}
+		// defer response.Body.Close()
+
+		if response.StatusCode != 200 {
+			helpers.ResponseJSON("Unauthorized", http.StatusUnauthorized, "error", nil).Send(w)
+			return
+		}
 
 		next.ServeHTTP(w, r)
 	}
