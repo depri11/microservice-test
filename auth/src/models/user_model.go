@@ -15,3 +15,12 @@ type ResponseRegisterUser struct {
 	Name     string    `json:"name"`
 	Username string    `json:"username"`
 }
+
+type InputLoginUser struct {
+	Msisdn   string `json:"msisdn"`
+	Password string `json:"password"`
+}
+
+type ResponseLoginUser struct {
+	Token string `json:"token"`
+}

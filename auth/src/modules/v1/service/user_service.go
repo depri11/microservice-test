@@ -17,7 +17,7 @@ func NewService(repository interfaces.UserRepository) *service {
 }
 
 func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, error) {
-	_, err := s.repository.GetByMsisdn(input.Msisdn)
+	_, err := s.repository.GetByMsisdn("62" + input.Msisdn)
 	if err == nil {
 		response := helpers.ResponseJSON("Failed", 401, "error", "msisdn already exists")
 		return response, nil
@@ -55,5 +55,28 @@ func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, 
 	res.Username = dataUser.Username
 
 	response := helpers.ResponseJSON("Success", 200, "OK", res)
+	return response, nil
+}
+
+func (s *service) Login(input *models.InputLoginUser) (*helpers.Response, error) {
+	user, err := s.repository.GetByMsisdn("62" + input.Msisdn)
+	if err != nil {
+		response := helpers.ResponseJSON("Bad Request", 401, "error", "msisdn not found")
+		return response, nil
+	}
+
+	if !helpers.CheckPassword(user.Password, input.Password) {
+		response := helpers.ResponseJSON("Bad Request", 401, "error", "please check your msisdn/password")
+		return response, nil
+	}
+
+	token := helpers.NewToken(user.ID.String())
+	tokens, err := token.Create()
+	if err != nil {
+		response := helpers.ResponseJSON("Internal Server Error", 500, "error", nil)
+		return response, nil
+	}
+
+	response := helpers.ResponseJSON("Success", 200, "OK", tokens)
 	return response, nil
 }
