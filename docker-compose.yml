@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+    lolipad_auth:
+        container_name: auth
+        build: ./auth
+        ports:
+            - 3000:3000
+        environment:
+            - DB_USER=postgres
+            - DB_HOST=localhost
+            - DB_NAME=lolipad_auth
+            - DB_PASS=123
+    lolipad_logistic:
+        container_name: logistic
+        build: ./logistic
+        ports:
+            - 3001:3001
+        environment:
+            - DB_USER=postgres
+            - DB_HOST=localhost
+            - DB_NAME=lolipad_logistic
+            - DB_PASS=123
