@@ -45,3 +45,18 @@ func (h *handler) Login(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(result)
 }
+
+func (h *handler) CheckToken(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var input models.InputCheckToken
+	json.NewDecoder(r.Body).Decode(&input)
+
+	result, err := h.service.CheckToken(input.Token)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(w).Encode(result)
+}

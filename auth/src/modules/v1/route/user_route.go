@@ -17,4 +17,5 @@ func AuthRouter(r *mux.Router, db *gorm.DB) {
 
 	route.HandleFunc("/register", handler.Register).Methods("POST")
 	route.HandleFunc("/", handler.Login).Methods("POST")
+	route.HandleFunc("/check-token", handler.CheckToken).Methods("GET")
 }

@@ -80,3 +80,14 @@ func (s *service) Login(input *models.InputLoginUser) (*helpers.Response, error)
 	response := helpers.ResponseJSON("Success", 200, "OK", tokens)
 	return response, nil
 }
+
+func (s *service) CheckToken(token string) (*helpers.Response, error) {
+	check, err := helpers.CheckToken(token)
+	if err != nil {
+		response := helpers.ResponseJSON("Bad Request", 401, "error", err.Error())
+		return response, nil
+	}
+
+	response := helpers.ResponseJSON("Success", 200, "OK", check)
+	return response, nil
+}

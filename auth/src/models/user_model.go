@@ -24,3 +24,7 @@ type InputLoginUser struct {
 type ResponseLoginUser struct {
 	Token string `json:"token"`
 }
+
+type InputCheckToken struct {
+	Token string `json:"token"`
+}

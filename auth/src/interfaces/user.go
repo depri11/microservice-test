@@ -15,4 +15,5 @@ type UserRepository interface {
 type UserService interface {
 	Login(input *models.InputLoginUser) (*helpers.Response, error)
 	Register(input *models.InputRegisterUser) (*helpers.Response, error)
+	CheckToken(token string) (*helpers.Response, error)
 }
