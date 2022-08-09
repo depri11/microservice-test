@@ -17,4 +17,5 @@ func AuthRouter(r *mux.Router, db *gorm.DB) {
 	handler := handler.NewHandler(service)
 
 	route.HandleFunc("/all", middleware.Do(handler.GetAllData, middleware.CheckAuth)).Methods("GET")
+	route.HandleFunc("/", middleware.Do(handler.GetData, middleware.CheckAuth)).Methods("GET")
 }

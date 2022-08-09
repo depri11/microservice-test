@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/depri11/lolipad/logistic/src/interfaces"
+	"github.com/depri11/lolipad/logistic/src/models"
 )
 
 type handler struct {
@@ -19,6 +20,21 @@ func (h *handler) GetAllData(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	result, err := h.service.FindAll()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	json.NewEncoder(w).Encode(result)
+}
+
+func (h *handler) GetData(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var input models.InputLogisticData
+	json.NewDecoder(r.Body).Decode(&input)
+
+	result, err := h.service.GetData(&input)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
