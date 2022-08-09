@@ -1,9 +1,7 @@
 package interfaces
 
-import (
-	"github.com/depri11/lolipad/auth/src/models"
-)
+import "github.com/depri11/lolipad/auth/src/entity"
 
 type UserRepository interface {
-	SaveData(data models.ResponseRegisterUser) (*models.ResponseRegisterUser, error)
+	SaveData(data *entity.User) (*entity.User, error)
 }

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/depri11/lolipad/auth/src/models"
+	"github.com/depri11/lolipad/auth/src/entity"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +13,7 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) SaveData(data *models.ResponseRegisterUser) (*models.ResponseRegisterUser, error) {
+func (r *repository) SaveData(data *entity.User) (*entity.User, error) {
 	err := r.db.Create(data).Error
 	if err != nil {
 		return nil, err
