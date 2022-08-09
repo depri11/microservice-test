@@ -1,6 +1,32 @@
 version: '3.5'
 
 services:
+    postgres_auth:
+        image: postgres:14-alpine
+        container_name: 'postgres_auth'
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=lolipad_auth
+        ports:
+            - '5432:5432'
+        networks:
+            - lolipad_auth
+        volumes:
+            - database_postgres:/var/lib/postgresql/data
+    postgres_logistic:
+        image: postgres:14-alpine
+        container_name: 'postgres_logistic'
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=123
+            - POSTGRES_DB=lolipad_logistic
+        ports:
+            - '5433:5433'
+        networks:
+            - lolipad_logistic
+        volumes:
+            - database_postgres:/var/lib/postgresql/data
     lolipad_auth:
         container_name: auth
         build: ./auth
@@ -11,6 +37,10 @@ services:
             - DB_HOST=localhost
             - DB_NAME=lolipad_auth
             - DB_PASS=123
+        depends_on:
+            - postgres_auth
+        networks:
+            - lolipad_auth
     lolipad_logistic:
         container_name: logistic
         build: ./logistic
@@ -21,3 +51,16 @@ services:
             - DB_HOST=localhost
             - DB_NAME=lolipad_logistic
             - DB_PASS=123
+        depends_on:
+            - postgres_logistic
+        networks:
+            - lolipad_logistic
+
+volumes:
+    database_postgres:
+
+networks:
+    lolipad_lauth:
+        driver: bridge
+    lolipad_logistic:
+        driver: bridge
