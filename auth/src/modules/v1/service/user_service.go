@@ -61,20 +61,18 @@ func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, 
 func (s *service) Login(input *models.InputLoginUser) (*helpers.Response, error) {
 	user, err := s.repository.GetByMsisdn("62" + input.Msisdn)
 	if err != nil {
-		response := helpers.ResponseJSON("Bad Request", 401, "error", "msisdn not found")
+		response := helpers.ResponseJSON("Bad Request", 400, "error", "msisdn not found")
 		return response, nil
 	}
 
 	if !helpers.CheckPassword(user.Password, input.Password) {
-		response := helpers.ResponseJSON("Bad Request", 401, "error", "please check your msisdn/password")
-		return response, nil
+		return nil, err
 	}
 
 	token := helpers.NewToken(user.ID.String())
 	tokens, err := token.Create()
 	if err != nil {
-		response := helpers.ResponseJSON("Internal Server Error", 500, "error", nil)
-		return response, nil
+		return nil, err
 	}
 
 	response := helpers.ResponseJSON("Success", 200, "OK", tokens)
@@ -84,8 +82,7 @@ func (s *service) Login(input *models.InputLoginUser) (*helpers.Response, error)
 func (s *service) CheckToken(token string) (*helpers.Response, error) {
 	check, err := helpers.CheckToken(token)
 	if err != nil {
-		response := helpers.ResponseJSON("Bad Request", 401, "error", err.Error())
-		return response, nil
+		return nil, err
 	}
 
 	response := helpers.ResponseJSON("Success", 200, "OK", check)
