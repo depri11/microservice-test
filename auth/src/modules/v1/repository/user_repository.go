@@ -13,7 +13,7 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) GetByMsisdn(msisdn int) (*entity.User, error) {
+func (r *repository) GetByMsisdn(msisdn string) (*entity.User, error) {
 	var user entity.User
 	err := r.db.Where("msisdn = ?", msisdn).Take(&user).Error
 	if err != nil {

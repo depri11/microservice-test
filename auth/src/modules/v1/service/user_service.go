@@ -32,7 +32,7 @@ func (s *service) Register(input *models.InputRegisterUser) (*helpers.Response, 
 	var user entity.User
 	id := uuid.New()
 	user.ID = id
-	user.Msisdn = input.Msisdn
+	user.Msisdn = "62" + input.Msisdn
 	user.Name = input.Name
 	user.Username = input.Username
 
